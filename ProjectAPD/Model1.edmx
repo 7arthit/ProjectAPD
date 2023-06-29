@@ -1,0 +1,515 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="APD65_63011212019Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Billx">
+          <Key>
+            <PropertyRef Name="BillId" />
+          </Key>
+          <Property Name="BillId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Time" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Cid" Type="int" Nullable="false" />
+          <Property Name="TotalPrice" Type="int" />
+        </EntityType>
+        <EntityType Name="ComboSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="SetPrice" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComboSetItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="ComboSetId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customerx">
+          <Key>
+            <PropertyRef Name="Cid" />
+          </Key>
+          <Property Name="Cid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Emplopeex">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Iid" />
+          </Key>
+          <Property Name="Iid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BillId" Type="int" />
+          <Property Name="Pid" Type="int" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Productx">
+          <Key>
+            <PropertyRef Name="Pid" />
+          </Key>
+          <Property Name="Pid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="UnitPrice" Type="int" Nullable="false" />
+          <Property Name="Tid" Type="int" />
+          <Property Name="Description" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Image" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TypeProduct">
+          <Key>
+            <PropertyRef Name="Tid" />
+          </Key>
+          <Property Name="Tid" Type="int" Nullable="false" />
+          <Property Name="TypeName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Billx_Customerx">
+          <End Role="Customerx" Type="Self.Customerx" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Billx" Type="Self.Billx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customerx">
+              <PropertyRef Name="Cid" />
+            </Principal>
+            <Dependent Role="Billx">
+              <PropertyRef Name="Cid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComboSetItem_ComboSet">
+          <End Role="ComboSet" Type="Self.ComboSet" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ComboSetItem" Type="Self.ComboSetItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComboSet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ComboSetItem">
+              <PropertyRef Name="ComboSetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComboSetItem_Productx">
+          <End Role="Productx" Type="Self.Productx" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ComboSetItem" Type="Self.ComboSetItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productx">
+              <PropertyRef Name="Pid" />
+            </Principal>
+            <Dependent Role="ComboSetItem">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_Billx">
+          <End Role="Billx" Type="Self.Billx" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Billx">
+              <PropertyRef Name="BillId" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="BillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_Productx">
+          <End Role="Productx" Type="Self.Productx" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productx">
+              <PropertyRef Name="Pid" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="Pid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productx_TypeProduct">
+          <End Role="TypeProduct" Type="Self.TypeProduct" Multiplicity="0..1" />
+          <End Role="Productx" Type="Self.Productx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeProduct">
+              <PropertyRef Name="Tid" />
+            </Principal>
+            <Dependent Role="Productx">
+              <PropertyRef Name="Tid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="APD65_63011212019ModelStoreContainer">
+          <EntitySet Name="Billx" EntityType="Self.Billx" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComboSet" EntityType="Self.ComboSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComboSetItem" EntityType="Self.ComboSetItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customerx" EntityType="Self.Customerx" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Emplopeex" EntityType="Self.Emplopeex" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Productx" EntityType="Self.Productx" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypeProduct" EntityType="Self.TypeProduct" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Billx_Customerx" Association="Self.FK_Billx_Customerx">
+            <End Role="Customerx" EntitySet="Customerx" />
+            <End Role="Billx" EntitySet="Billx" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComboSetItem_ComboSet" Association="Self.FK_ComboSetItem_ComboSet">
+            <End Role="ComboSet" EntitySet="ComboSet" />
+            <End Role="ComboSetItem" EntitySet="ComboSetItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComboSetItem_Productx" Association="Self.FK_ComboSetItem_Productx">
+            <End Role="Productx" EntitySet="Productx" />
+            <End Role="ComboSetItem" EntitySet="ComboSetItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_Billx" Association="Self.FK_Item_Billx">
+            <End Role="Billx" EntitySet="Billx" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_Productx" Association="Self.FK_Item_Productx">
+            <End Role="Productx" EntitySet="Productx" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productx_TypeProduct" Association="Self.FK_Productx_TypeProduct">
+            <End Role="TypeProduct" EntitySet="TypeProduct" />
+            <End Role="Productx" EntitySet="Productx" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="APD65_63011212019Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Billx">
+          <Key>
+            <PropertyRef Name="BillId" />
+          </Key>
+          <Property Name="BillId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Time" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Cid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Customerx" Relationship="Self.FK_Billx_Customerx" FromRole="Billx" ToRole="Customerx" />
+          <NavigationProperty Name="Items" Relationship="Self.FK_Item_Billx" FromRole="Billx" ToRole="Item" />
+          <Property Name="TotalPrice" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Customerx">
+          <Key>
+            <PropertyRef Name="Cid" />
+          </Key>
+          <Property Name="Cid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Lname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Billxes" Relationship="Self.FK_Billx_Customerx" FromRole="Customerx" ToRole="Billx" />
+        </EntityType>
+        <EntityType Name="Emplopeex">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Iid" />
+          </Key>
+          <Property Name="Iid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BillId" Type="Int32" />
+          <Property Name="Pid" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Billx" Relationship="Self.FK_Item_Billx" FromRole="Item" ToRole="Billx" />
+          <NavigationProperty Name="Productx" Relationship="Self.FK_Item_Productx" FromRole="Item" ToRole="Productx" />
+        </EntityType>
+        <EntityType Name="Productx">
+          <Key>
+            <PropertyRef Name="Pid" />
+          </Key>
+          <Property Name="Pid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UnitPrice" Type="Int32" Nullable="false" />
+          <Property Name="Tid" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Items" Relationship="Self.FK_Item_Productx" FromRole="Productx" ToRole="Item" />
+          <NavigationProperty Name="TypeProduct" Relationship="Self.FK_Productx_TypeProduct" FromRole="Productx" ToRole="TypeProduct" />
+          <NavigationProperty Name="ComboSetItems" Relationship="APD65_63011212019Model.FK_ComboSetItem_Productx" FromRole="Productx" ToRole="ComboSetItem" />
+        </EntityType>
+        <EntityType Name="TypeProduct">
+          <Key>
+            <PropertyRef Name="Tid" />
+          </Key>
+          <Property Name="Tid" Type="Int32" Nullable="false" />
+          <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Productxes" Relationship="Self.FK_Productx_TypeProduct" FromRole="TypeProduct" ToRole="Productx" />
+        </EntityType>
+        <Association Name="FK_Billx_Customerx">
+          <End Role="Customerx" Type="Self.Customerx" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Billx" Type="Self.Billx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customerx">
+              <PropertyRef Name="Cid" />
+            </Principal>
+            <Dependent Role="Billx">
+              <PropertyRef Name="Cid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_Billx">
+          <End Role="Billx" Type="Self.Billx" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Billx">
+              <PropertyRef Name="BillId" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="BillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_Productx">
+          <End Role="Productx" Type="Self.Productx" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productx">
+              <PropertyRef Name="Pid" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="Pid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productx_TypeProduct">
+          <End Role="TypeProduct" Type="Self.TypeProduct" Multiplicity="0..1" />
+          <End Role="Productx" Type="Self.Productx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeProduct">
+              <PropertyRef Name="Tid" />
+            </Principal>
+            <Dependent Role="Productx">
+              <PropertyRef Name="Tid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="APD65_63011212019Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Billxes" EntityType="Self.Billx" />
+          <EntitySet Name="Customerxes" EntityType="Self.Customerx" />
+          <EntitySet Name="Emplopeexes" EntityType="Self.Emplopeex" />
+          <EntitySet Name="Items" EntityType="Self.Item" />
+          <EntitySet Name="Productxes" EntityType="Self.Productx" />
+          <EntitySet Name="TypeProducts" EntityType="Self.TypeProduct" />
+          <AssociationSet Name="FK_Billx_Customerx" Association="Self.FK_Billx_Customerx">
+            <End Role="Customerx" EntitySet="Customerxes" />
+            <End Role="Billx" EntitySet="Billxes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_Billx" Association="Self.FK_Item_Billx">
+            <End Role="Billx" EntitySet="Billxes" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_Productx" Association="Self.FK_Item_Productx">
+            <End Role="Productx" EntitySet="Productxes" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productx_TypeProduct" Association="Self.FK_Productx_TypeProduct">
+            <End Role="TypeProduct" EntitySet="TypeProducts" />
+            <End Role="Productx" EntitySet="Productxes" />
+          </AssociationSet>
+          <EntitySet Name="ComboSets" EntityType="APD65_63011212019Model.ComboSet" />
+          <EntitySet Name="ComboSetItems" EntityType="APD65_63011212019Model.ComboSetItem" />
+          <AssociationSet Name="FK_ComboSetItem_ComboSet" Association="APD65_63011212019Model.FK_ComboSetItem_ComboSet">
+            <End Role="ComboSet" EntitySet="ComboSets" />
+            <End Role="ComboSetItem" EntitySet="ComboSetItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComboSetItem_Productx" Association="APD65_63011212019Model.FK_ComboSetItem_Productx">
+            <End Role="Productx" EntitySet="Productxes" />
+            <End Role="ComboSetItem" EntitySet="ComboSetItems" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ComboSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="SetPrice" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ComboSetItems" Relationship="APD65_63011212019Model.FK_ComboSetItem_ComboSet" FromRole="ComboSet" ToRole="ComboSetItem" />
+        </EntityType>
+        <EntityType Name="ComboSetItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="ComboSetId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ComboSet" Relationship="APD65_63011212019Model.FK_ComboSetItem_ComboSet" FromRole="ComboSetItem" ToRole="ComboSet" />
+          <NavigationProperty Name="Productx" Relationship="APD65_63011212019Model.FK_ComboSetItem_Productx" FromRole="ComboSetItem" ToRole="Productx" />
+        </EntityType>
+        <Association Name="FK_ComboSetItem_ComboSet">
+          <End Type="APD65_63011212019Model.ComboSet" Role="ComboSet" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="APD65_63011212019Model.ComboSetItem" Role="ComboSetItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComboSet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ComboSetItem">
+              <PropertyRef Name="ComboSetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComboSetItem_Productx">
+          <End Type="APD65_63011212019Model.Productx" Role="Productx" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="APD65_63011212019Model.ComboSetItem" Role="ComboSetItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productx">
+              <PropertyRef Name="Pid" />
+            </Principal>
+            <Dependent Role="ComboSetItem">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="APD65_63011212019ModelStoreContainer" CdmEntityContainer="APD65_63011212019Entities">
+          <EntitySetMapping Name="Billxes">
+            <EntityTypeMapping TypeName="APD65_63011212019Model.Billx">
+              <MappingFragment StoreEntitySet="Billx">
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="BillId" ColumnName="BillId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customerxes">
+            <EntityTypeMapping TypeName="APD65_63011212019Model.Customerx">
+              <MappingFragment StoreEntitySet="Customerx">
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
+                <ScalarProperty Name="Fname" ColumnName="Fname" />
+                <ScalarProperty Name="Lname" ColumnName="Lname" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Emplopeexes">
+            <EntityTypeMapping TypeName="APD65_63011212019Model.Emplopeex">
+              <MappingFragment StoreEntitySet="Emplopeex">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="APD65_63011212019Model.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="Iid" ColumnName="Iid" />
+                <ScalarProperty Name="BillId" ColumnName="BillId" />
+                <ScalarProperty Name="Pid" ColumnName="Pid" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Productxes">
+            <EntityTypeMapping TypeName="APD65_63011212019Model.Productx">
+              <MappingFragment StoreEntitySet="Productx">
+                <ScalarProperty Name="Pid" ColumnName="Pid" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="Tid" ColumnName="Tid" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypeProducts">
+            <EntityTypeMapping TypeName="APD65_63011212019Model.TypeProduct">
+              <MappingFragment StoreEntitySet="TypeProduct">
+                <ScalarProperty Name="Tid" ColumnName="Tid" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComboSets">
+            <EntityTypeMapping TypeName="APD65_63011212019Model.ComboSet">
+              <MappingFragment StoreEntitySet="ComboSet">
+                <ScalarProperty Name="SetPrice" ColumnName="SetPrice" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComboSetItems">
+            <EntityTypeMapping TypeName="APD65_63011212019Model.ComboSetItem">
+              <MappingFragment StoreEntitySet="ComboSetItem">
+                <ScalarProperty Name="ComboSetId" ColumnName="ComboSetId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
